@@ -1,9 +1,9 @@
 <template>
   <table cellspacing="0" cellpadding="0" border="0" :style="styles">
-        <!-- <colgroup>
-            <col v-for="(column, index) in columns" :width="setCellWidth(column)">
-            <col v-if="$parent.showVerticalScrollBar" :width="$parent.scrollBarWidth"/>
-        </colgroup> -->
+        <colgroup>
+            <col v-for="(column, index) in columns" :width="setCellWidth(column)" :key="index"/>
+            <!-- <col v-if="$parent.showVerticalScrollBar" :width="$parent.scrollBarWidth"/> -->
+        </colgroup>
         <thead>
             <tr v-for="(cols, rowIndex) in headRows" :key="rowIndex">
                 <th
@@ -66,6 +66,16 @@ export default {
             // }
         ];
     },
+    setCellWidth (column) {
+        let width = '';
+        if (column.width) {
+            width = column.width;
+        } else if (this.columnsWidth[column._index]) {
+            width = this.columnsWidth[column._index].width;
+        }
+        if (width === '0') width = '';
+        return width;
+    }
   }
 }
 </script>

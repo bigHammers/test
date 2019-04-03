@@ -69,6 +69,21 @@
         data10: []
       };
     },
+    mounted() {
+       const data = [];
+            for (let i = 0; i < 20; i++) {
+                data.push({
+                    key: i,
+                    timeTrend: 'John Brown',
+                    age: i + 1,
+                    pay: 'Lake Park',
+                    people: 'C',
+                    perf: 2035,
+                    shop: 'Lake Street 42',
+                });
+            }
+            this.data10 = data;
+    },
     components: {
       Table
     }
