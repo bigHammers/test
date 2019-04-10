@@ -91,10 +91,11 @@
     convertToRows,
     convertColumnOrder,
     getRandomStr
-  } from '../utils/util';
+  } from '../../utils/util';
   import {
-    deepCopy
-  } from '../utils/assist';
+    deepCopy,
+    getStyle
+  } from '../../utils/assist';
   const prefixCls = 'table';
   let rowKey = 1;
   let columnKey = 1;
@@ -231,6 +232,51 @@
           // if (this.isRightFixed) this.$refs.fixedRightBody.scrollTop = event.target.scrollTop;
           this.hideColumnFilter();
       },
+       fixedHeader () {
+            if (this.height) {
+                this.$nextTick(() => {
+                    const titleHeight = parseInt(getStyle(this.$refs.title, 'height')) || 0;
+                    const headerHeight = parseInt(getStyle(this.$refs.header, 'height')) || 0;
+                    const footerHeight = parseInt(getStyle(this.$refs.footer, 'height')) || 0;
+                    this.bodyHeight = this.height - titleHeight - headerHeight - footerHeight;
+                    this.$nextTick(()=>this.fixedBody());
+                });
+            } else {
+                this.bodyHeight = 0;
+                this.$nextTick(()=>this.fixedBody());
+            }
+        },
+        fixedBody (){
+                if (this.$refs.header) {
+                    this.headerWidth = this.$refs.header.children[0].offsetWidth;
+                    this.headerHeight = this.$refs.header.children[0].offsetHeight;
+                    //this.showHorizontalScrollBar = this.headerWidth>this.$refs.header.offsetWidth;
+                }
+
+                if (!this.$refs.tbody || !this.data || this.data.length === 0) {
+                    this.showVerticalScrollBar = false;
+                }
+                else{
+                    let bodyContentEl = this.$refs.tbody.$el;
+                    let bodyEl = bodyContentEl.parentElement;
+                    let bodyContentHeight = bodyContentEl.offsetHeight;
+                    let bodyHeight = bodyEl.offsetHeight;
+
+                    this.showHorizontalScrollBar = bodyEl.offsetWidth < bodyContentEl.offsetWidth + (this.showVerticalScrollBar?this.scrollBarWidth:0);
+                    this.showVerticalScrollBar = this.bodyHeight? bodyHeight - (this.showHorizontalScrollBar?this.scrollBarWidth:0) < bodyContentHeight : false;
+                    
+                    if(this.showVerticalScrollBar){
+                        bodyEl.classList.add(this.prefixCls +'-overflowY');
+                    }else{
+                        bodyEl.classList.remove(this.prefixCls +'-overflowY');
+                    }
+                    if(this.showHorizontalScrollBar){
+                        bodyEl.classList.add(this.prefixCls +'-overflowX');
+                    }else{
+                        bodyEl.classList.remove(this.prefixCls +'-overflowX');
+                    }
+                } 
+            },
       
       handleResize() {
         //let tableWidth = parseInt(getStyle(this.$el, 'width')) - 1;
@@ -317,7 +363,7 @@
         }
         this.tableWidth = this.cloneColumns.map(cell => cell._width).reduce((a, b) => a + b, 0) + (this.showVerticalScrollBar ? this.scrollBarWidth : 0) + 1;
         this.columnsWidth = columnsWidth;
-        // this.fixedHeader();
+        this.fixedHeader();
       },
       makeObjData() {
         let data = {};
@@ -434,7 +480,6 @@
     },
     created(){
         this.rebuildData = this.makeDataWithSortAndFilter();
-
     },
     mounted(){
       this.handleResize();

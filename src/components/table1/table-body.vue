@@ -7,9 +7,8 @@
             <template v-for="(row, index) in data" >
                     <tr :class="rowClasses(row._index)">
                         <td v-for="column in columns" :class="alignCls(column, row)">
-                         12113212
-
-                        <!-- <table-cell
+                          {{ row[column.key] }}
+                          <!-- <table-cell
                             :fixed="fixed"
                             :prefix-cls="prefixCls"
                             :row="row"
@@ -53,10 +52,10 @@ export default {
         }
         return [
             {
-                [`${cellClassName}`]: cellClassName,    // cell className
+                // [`${cellClassName}`]: cellClassName,    // cell className
                 [`${column.className}`]: column.className,    // column className
                 [`${this.prefixCls}-column-${column.align}`]: column.align,
-                [`${this.prefixCls}-hidden`]: (this.fixed === 'left' && column.fixed !== 'left') || (this.fixed === 'right' && column.fixed !== 'right') || (!this.fixed && column.fixed && (column.fixed === 'left' || column.fixed === 'right'))
+                // [`${this.prefixCls}-hidden`]: (this.fixed === 'left' && column.fixed !== 'left') || (this.fixed === 'right' && column.fixed !== 'right') || (!this.fixed && column.fixed && (column.fixed === 'left' || column.fixed === 'right'))
             }
         ];
     },

@@ -4,7 +4,7 @@
 
 <script>
   // @ is an alias to /src
-  import Table from "@/components/table.vue";
+  import Table from "@/components/table1/table.vue";
   export default {
     name: "home",
     data() {
@@ -69,7 +69,7 @@
         data10: []
       };
     },
-    mounted() {
+    created() {
        const data = [];
             for (let i = 0; i < 20; i++) {
                 data.push({
@@ -82,7 +82,7 @@
                     shop: 'Lake Street 42',
                 });
             }
-            this.data10 = data;
+        this.data10 = data;
     },
     components: {
       Table
