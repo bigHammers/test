@@ -1,7 +1,6 @@
 <template>
   <div class="table-wrapper">
     <div :class="classes">
-      <!-- <div :class="[prefixCls + '-title']" v-if="showSlotHeader" ref="title"><slot name="header"></slot></div> -->
       <div :class="[prefixCls + '-header']" v-if="showHeader" ref="header" @mousewheel="handleMouseWheel">
         <table-head :prefix-cls="prefixCls" :styleObject="tableHeaderStyle" :columns="cloneColumns" :column-rows="columnRows" :obj-data="objData" :columns-width="columnsWidth" :data="rebuildData"></table-head>
       </div>
@@ -16,70 +15,73 @@
               :columns-width="columnsWidth"
               :obj-data="objData"></table-body>
       </div>
-      <!-- <div
-                      :class="[prefixCls + '-tip']" :style="bodyStyle" @scroll="handleBodyScroll"
-                      v-show="((!!localeNoDataText && (!data || data.length === 0)) || (!!localeNoFilteredDataText && (!rebuildData || rebuildData.length === 0)))">
-                      <table cellspacing="0" cellpadding="0" border="0">
-                          <tbody>
-                              <tr>
-                                  <td :style="{'height':bodyStyle.height,'width':`${this.headerWidth}px`}">
-                                      <span v-html="localeNoDataText" v-if="!data || data.length === 0"></span>
-                                      <span v-html="localeNoFilteredDataText" v-else></span>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-                  <div :class="[prefixCls + '-fixed']" :style="fixedTableStyle" v-if="isLeftFixed">
-                      <div :class="fixedHeaderClasses" v-if="showHeader">
-                          <table-head
-                              fixed="left"
-                              :prefix-cls="prefixCls"
-                              :styleObject="fixedTableStyle"
-                              :columns="leftFixedColumns"
-                              :column-rows="columnRows"
-                              :fixed-column-rows="leftFixedColumnRows"
-                              :obj-data="objData"
-                              :columns-width="columnsWidth"
-                              :data="rebuildData"></table-head>
-                      </div>
-                      <div :class="[prefixCls + '-fixed-body']" :style="fixedBodyStyle" ref="fixedBody" @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
-                          <table-body
-                              fixed="left"
-                              :prefix-cls="prefixCls"
-                              :styleObject="fixedTableStyle"
-                              :columns="leftFixedColumns"
-                              :data="rebuildData"
-                              :columns-width="columnsWidth"
-                              :obj-data="objData"></table-body>
-                      </div>
-                  </div>
-                  <div :class="[prefixCls + '-fixed-right']" :style="fixedRightTableStyle" v-if="isRightFixed">
-                      <div :class="fixedHeaderClasses" v-if="showHeader">
-                          <table-head
-                              fixed="right"
-                              :prefix-cls="prefixCls"
-                              :styleObject="fixedRightTableStyle"
-                              :columns="rightFixedColumns"
-                              :column-rows="columnRows"
-                              :fixed-column-rows="rightFixedColumnRows"
-                              :obj-data="objData"
-                              :columns-width="columnsWidth"
-                              :data="rebuildData"></table-head>
-                      </div>
-                      <div :class="[prefixCls + '-fixed-body']" :style="fixedBodyStyle" ref="fixedRightBody" @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
-                          <table-body
-                              fixed="right"
-                              :prefix-cls="prefixCls"
-                              :styleObject="fixedRightTableStyle"
-                              :columns="rightFixedColumns"
-                              :data="rebuildData"
-                              :columns-width="columnsWidth"
-                              :obj-data="objData"></table-body>
-                      </div>
-                  </div>
-                  <div :class="[prefixCls + '-fixed-right-header']" :style="fixedRightHeaderStyle" v-if="isRightFixed"></div> -->
+      <div
+          :class="[prefixCls + '-tip']" :style="bodyStyle" @scroll="handleBodyScroll"
+          v-show="(( (!data || data.length === 0)) || ( (!rebuildData || rebuildData.length === 0)))">
+          <table cellspacing="0" cellpadding="0" border="0">
+              <tbody>
+                  <tr>
+                      <td :style="{'height':bodyStyle.height,'width':`${this.headerWidth}px`}">
+                          <span>暂无数据</span>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <div :class="[prefixCls + '-fixed']" :style="fixedTableStyle" v-if="isLeftFixed">
+          <div :class="fixedHeaderClasses" v-if="showHeader">
+              <table-head
+                  fixed="left"
+                  :prefix-cls="prefixCls"
+                  :styleObject="fixedTableStyle"
+                  :columns="leftFixedColumns"
+                  :column-rows="columnRows"
+                  :fixed-column-rows="leftFixedColumnRows"
+                  :obj-data="objData"
+                  :columns-width="columnsWidth"
+                  :data="rebuildData"></table-head>
+          </div>
+          <div :class="[prefixCls + '-fixed-body']" :style="fixedBodyStyle" ref="fixedBody" @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
+              <table-body
+                  fixed="left"
+                  :prefix-cls="prefixCls"
+                  :styleObject="fixedTableStyle"
+                  :columns="leftFixedColumns"
+                  :data="rebuildData"
+                  :columns-width="columnsWidth"
+                  :obj-data="objData"></table-body>
+          </div>
+      </div>
+      <div :class="[prefixCls + '-fixed-right']" :style="fixedRightTableStyle" v-if="isRightFixed">
+          <div :class="fixedHeaderClasses" v-if="showHeader">
+              <table-head
+                  fixed="right"
+                  :prefix-cls="prefixCls"
+                  :styleObject="fixedRightTableStyle"
+                  :columns="rightFixedColumns"
+                  :column-rows="columnRows"
+                  :fixed-column-rows="rightFixedColumnRows"
+                  :obj-data="objData"
+                  :columns-width="columnsWidth"
+                  :data="rebuildData"></table-head>
+          </div>
+          <div :class="[prefixCls + '-fixed-body']" :style="fixedBodyStyle" ref="fixedRightBody" @mousewheel="handleFixedMousewheel" @DOMMouseScroll="handleFixedMousewheel">
+              <table-body
+                  fixed="right"
+                  :prefix-cls="prefixCls"
+                  :styleObject="fixedRightTableStyle"
+                  :columns="rightFixedColumns"
+                  :data="rebuildData"
+                  :columns-width="columnsWidth"
+                  :obj-data="objData"></table-body>
+          </div>
+      </div>
     </div>
+
+    <div v-if="loading">
+      正在加载中
+    </div>
+
   </div>
 </template>
 
@@ -121,6 +123,10 @@
       showHeader: {
         type: Boolean,
         default: true
+      },
+      highlightRow: {
+          type: Boolean,
+          default: true
       },
       width: {
         type: [Number, String]
@@ -205,8 +211,77 @@
           }
           return style;
       },
+      fixedHeaderClasses () {
+          return [
+              `${prefixCls}-fixed-header`,
+              {
+                  [`${prefixCls}-fixed-header-with-empty`]: !this.rebuildData.length
+              }
+          ];
+      },
+      fixedBodyStyle () {
+          let style = {};
+          if (this.bodyHeight !== 0) {
+              let height = this.bodyHeight - (this.showHorizontalScrollBar?this.scrollBarWidth:0);
+              style.height = this.showHorizontalScrollBar ? `${height}px` : `${height - 1}px`;
+          }
+          return style;
+      }, 
+      leftFixedColumns () {
+          return convertColumnOrder(this.cloneColumns, 'left');
+      },
+      fixedTableStyle () {
+          let style = {};
+          let width = 0;
+          this.leftFixedColumns.forEach((col) => {
+              if (col.fixed && col.fixed === 'left') width += col._width;
+          });
+          style.width = `${width}px`;
+          return style;
+      },
+      isLeftFixed () {
+          return this.columns.some(col => col.fixed && col.fixed === 'left');
+      },
+      isRightFixed () {
+          return this.columns.some(col => col.fixed && col.fixed === 'right');
+      }
     },
     methods: {
+      handleFixedMousewheel(event) {
+          let deltaY = event.deltaY;
+          if(!deltaY && event.detail){
+              deltaY = event.detail * 40;
+          }
+          if(!deltaY && event.wheelDeltaY){
+              deltaY = -event.wheelDeltaY;
+          }
+          if(!deltaY && event.wheelDelta){
+              deltaY = -event.wheelDelta;
+          }
+          if(!deltaY) return;
+          const body = this.$refs.body;
+          const currentScrollTop = body.scrollTop;
+          if (deltaY < 0 && currentScrollTop !== 0) {
+              event.preventDefault();
+          }
+          if (deltaY > 0 && body.scrollHeight - body.clientHeight > currentScrollTop) {
+              event.preventDefault();
+          }
+          //body.scrollTop += deltaY;c
+          let step = 0;
+          let timeId = setInterval(()=>{
+              step += 5;
+              if(deltaY>0){
+                  body.scrollTop += 2;
+              }
+              else{
+                  body.scrollTop -= 2;
+              }
+              if(step >= Math.abs(deltaY)){
+                  clearInterval(timeId);
+              }
+          }, 5);
+      },
       makeColumnsId(columns) {
         return columns.map(item => {
           if ('children' in item) this.makeColumnsId(item.children);
@@ -228,11 +303,11 @@
       },
       handleBodyScroll (event) {
           if (this.showHeader) this.$refs.header.scrollLeft = event.target.scrollLeft;
-          // if (this.isLeftFixed) this.$refs.fixedBody.scrollTop = event.target.scrollTop;
-          // if (this.isRightFixed) this.$refs.fixedRightBody.scrollTop = event.target.scrollTop;
+          if (this.isLeftFixed) this.$refs.fixedBody.scrollTop = event.target.scrollTop;
+          if (this.isRightFixed) this.$refs.fixedRightBody.scrollTop = event.target.scrollTop;
           this.hideColumnFilter();
       },
-       fixedHeader () {
+      fixedHeader () {
             if (this.height) {
                 this.$nextTick(() => {
                     const titleHeight = parseInt(getStyle(this.$refs.title, 'height')) || 0;
@@ -247,36 +322,36 @@
             }
         },
         fixedBody (){
-                if (this.$refs.header) {
-                    this.headerWidth = this.$refs.header.children[0].offsetWidth;
-                    this.headerHeight = this.$refs.header.children[0].offsetHeight;
-                    //this.showHorizontalScrollBar = this.headerWidth>this.$refs.header.offsetWidth;
-                }
+          if (this.$refs.header) {
+              this.headerWidth = this.$refs.header.children[0].offsetWidth;
+              this.headerHeight = this.$refs.header.children[0].offsetHeight;
+              //this.showHorizontalScrollBar = this.headerWidth>this.$refs.header.offsetWidth;
+          }
 
-                if (!this.$refs.tbody || !this.data || this.data.length === 0) {
-                    this.showVerticalScrollBar = false;
-                }
-                else{
-                    let bodyContentEl = this.$refs.tbody.$el;
-                    let bodyEl = bodyContentEl.parentElement;
-                    let bodyContentHeight = bodyContentEl.offsetHeight;
-                    let bodyHeight = bodyEl.offsetHeight;
+          if (!this.$refs.tbody || !this.data || this.data.length === 0) {
+              this.showVerticalScrollBar = false;
+          }
+          else{
+              let bodyContentEl = this.$refs.tbody.$el;
+              let bodyEl = bodyContentEl.parentElement;
+              let bodyContentHeight = bodyContentEl.offsetHeight;
+              let bodyHeight = bodyEl.offsetHeight;
 
-                    this.showHorizontalScrollBar = bodyEl.offsetWidth < bodyContentEl.offsetWidth + (this.showVerticalScrollBar?this.scrollBarWidth:0);
-                    this.showVerticalScrollBar = this.bodyHeight? bodyHeight - (this.showHorizontalScrollBar?this.scrollBarWidth:0) < bodyContentHeight : false;
-                    
-                    if(this.showVerticalScrollBar){
-                        bodyEl.classList.add(this.prefixCls +'-overflowY');
-                    }else{
-                        bodyEl.classList.remove(this.prefixCls +'-overflowY');
-                    }
-                    if(this.showHorizontalScrollBar){
-                        bodyEl.classList.add(this.prefixCls +'-overflowX');
-                    }else{
-                        bodyEl.classList.remove(this.prefixCls +'-overflowX');
-                    }
-                } 
-            },
+              this.showHorizontalScrollBar = bodyEl.offsetWidth < bodyContentEl.offsetWidth + (this.showVerticalScrollBar?this.scrollBarWidth:0);
+              this.showVerticalScrollBar = this.bodyHeight? bodyHeight - (this.showHorizontalScrollBar?this.scrollBarWidth:0) < bodyContentHeight : false;
+              
+              if(this.showVerticalScrollBar){
+                  bodyEl.classList.add(this.prefixCls +'-overflowY');
+              }else{
+                  bodyEl.classList.remove(this.prefixCls +'-overflowY');
+              }
+              if(this.showHorizontalScrollBar){
+                  bodyEl.classList.add(this.prefixCls +'-overflowX');
+              }else{
+                  bodyEl.classList.remove(this.prefixCls +'-overflowX');
+              }
+          } 
+      },
       
       handleResize() {
         //let tableWidth = parseInt(getStyle(this.$el, 'width')) - 1;
@@ -477,6 +552,109 @@
           this.cloneColumns.forEach(col => data = this.filterData(data, col));
           return data;
       },
+      clickCurrentRow (_index) {
+          this.highlightCurrentRow (_index);
+          this.$emit('on-row-click', JSON.parse(JSON.stringify(this.cloneData[_index])), _index);
+      },
+      highlightCurrentRow (_index) {
+          if (!this.highlightRow || this.objData[_index]._isHighlight) return;
+          this.handleCurrentRow('highlight', _index);
+      },
+      // 通用处理 highlightCurrentRow 和 clearCurrentRow
+      handleCurrentRow (type, _index) {
+          let oldIndex = -1;
+          for (let i in this.objData) {
+              if (this.objData[i]._isHighlight) {
+                  oldIndex = parseInt(i);
+                  this.objData[i]._isHighlight = false;
+              }
+          }
+          if (type === 'highlight') this.objData[_index]._isHighlight = true;
+          const oldData = oldIndex < 0 ? null : JSON.parse(JSON.stringify(this.cloneData[oldIndex]));
+          const newData = type === 'highlight' ? JSON.parse(JSON.stringify(this.cloneData[_index])) : null;
+          this.$emit('on-current-change', newData, oldData);
+      },
+      /**
+       * #2832
+       * 应该区分当前表头的 column 是左固定还是右固定
+       * 否则执行到 $parent 时，方法的 index 与 cloneColumns 的 index 是不对应的
+       * 左固定和右固定，要区分对待
+       * 所以，此方法用来获取正确的 index
+       * */
+      GetOriginalIndex (_index) {
+          return this.cloneColumns.findIndex(item => item._index === _index);
+      },
+      sortData (data, type, index) {
+          const key = this.cloneColumns[index].key;
+          data.sort((a, b) => {
+              if (this.cloneColumns[index].sortMethod) {
+                  return this.cloneColumns[index].sortMethod(a[key], b[key], type);
+              } else {
+                  if (type === 'asc') {
+                      return a[key] > b[key] ? 1 : -1;
+                  } else if (type === 'desc') {
+                      return a[key] < b[key] ? 1 : -1;
+                  }
+              }
+          });
+          return data;
+      },
+      filterData (data, column) {
+          return data.filter((row) => {
+              //如果定义了远程过滤方法则忽略此方法
+              if (typeof column.filterRemote === 'function') return true;
+
+              let status = !column._filterChecked.length;
+              for (let i = 0; i < column._filterChecked.length; i++) {
+                  status = column.filterMethod(column._filterChecked[i], row);
+                  if (status) break;
+              }
+              return status;
+          });
+      },
+      makeDataWithFilter () {
+          let data = this.makeData();
+          this.cloneColumns.forEach(col => data = this.filterData(data, col));
+          return data;
+      },
+      //排序部分
+      handleSort (_index, type) {
+          const index = this.GetOriginalIndex(_index);
+          this.cloneColumns.forEach((col) => col._sortType = 'normal');
+
+          const key = this.cloneColumns[index].key;
+          if (this.cloneColumns[index].sortable !== 'custom') {    // custom is for remote sort
+              if (type === 'normal') {
+                  this.rebuildData = this.makeDataWithFilter();
+              } else {
+                  this.rebuildData = this.sortData(this.rebuildData, type, index);
+              }
+          }
+          this.cloneColumns[index]._sortType = type;
+
+          this.$emit('on-sort-change', {
+              column: JSON.parse(JSON.stringify(this.allColumns[this.cloneColumns[index]._index])),
+              key: key,
+              order: type
+          });
+      },
+      //点击展开行
+      toggleExpand (_index) {
+          let data = {};
+          for (let i in this.objData) {
+              if (parseInt(i) === _index) {
+                  data = this.objData[i];
+                  break;
+              }
+          }
+          const status = !data._isExpanded;
+          this.objData[_index]._isExpanded = status;
+          this.$emit('on-expand', JSON.parse(JSON.stringify(this.cloneData[_index])), status);
+          
+          if(this.height){
+              this.$nextTick(()=>this.fixedBody());
+          }
+      },
     },
     created(){
         this.rebuildData = this.makeDataWithSortAndFilter();
@@ -492,6 +670,7 @@
   @table-prefix-cls: ~"table";
   @table-select-item-prefix-cls: ~"@{table-prefix-cls}-filter-select-item";
   @border-color-base: #ECEEF5;
+  @table-thead-bg: #FAFCFF;
   .@{table-prefix-cls} {
     &-wrapper {
       position: relative;
@@ -585,7 +764,8 @@
     th {
       height: 40px;
       white-space: nowrap;
-      overflow: hidden; // background-color: @table-thead-bg;
+      overflow: hidden; 
+      background-color: @table-thead-bg;
     }
     td {
       background-color: #fff; // transition: background-color @transition-time @ease-in-out;
@@ -676,16 +856,6 @@
           // background-color: @table-td-stripe-bg;
         }
       } // #1380
-      tr.@{table-prefix-cls}-row-hover {
-        td {
-          // background-color: @table-td-hover-bg;
-        }
-      }
-    }
-    tr&-row-hover {
-      td {
-        // background-color: @table-td-hover-bg;
-      }
     }
     &-large {
       // font-size: @font-size-base;
@@ -726,7 +896,7 @@
       }
     }
     &-row-highlight,
-    tr&-row-highlight&-row-hover,
+    tr&-row-highlight,
     &-stripe &-body tr&-row-highlight:nth-child(2n),
     &-stripe &-fixed-body tr&-row-highlight:nth-child(2n) {
       td {
@@ -742,7 +912,8 @@
       &::before {
         content: '';
         width: 100%;
-        height: 1px; // background-color: @border-color-base;
+        height: 1px; 
+        background-color: @border-color-base;
         position: absolute;
         left: 0;
         bottom: 0;
@@ -763,8 +934,7 @@
       // border-bottom: 1px solid @border-color-split;
     }
     &-fixed-header {
-      overflow: hidden; // 在 #1387 里，添加了下面的代码，但是在 #5174 会出现新的问题。
-      // 但是，在新版本里，注释掉后，#1387 的问题并没有再复现，所以注释掉
+      overflow: hidden;
       //&-with-empty{
       //    .@{table-prefix-cls}-hidden{
       //        .@{table-prefix-cls}-sort{
@@ -800,9 +970,6 @@
       i {
         // color: @btn-disable-color;
         // transition: color @transition-time @ease-in-out;
-        &:hover {
-          color: inherit;
-        }
         &.on {
           // color: @primary-color;
         }

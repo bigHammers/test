@@ -1,5 +1,6 @@
 <template>
   <Table :columns="columns11" :data="data10" border height="500" />
+
 </template>
 
 <script>
@@ -9,21 +10,23 @@
     name: "home",
     data() {
       return {
-        columns11: [{
+        columns11: [
+          
+          {
             title: "时间趋势",
             key: "timeTrend",
             align: "center",
-            width: 200,
+            width: 150,
             fixed: "left",
-            filters: [{
-                label: "Joe",
-                value: 1
-              },
-              {
-                label: "John",
-                value: 2
-              }
-            ],
+            type: 'expand',
+          },
+          {
+            type: 'expand',
+            title: "1213",
+            width: 50,
+            render: (h) => {
+                return h('span','234')
+            }
           },
           {
             title: "现金类",
@@ -32,35 +35,35 @@
                 title: "微信支付",
                 key: "age",
                 align: "center",
-                width: 200,
+                width: 150,
                 sortable: true
               },
               {
                 title: "支付宝支付",
                 align: "center",
                 key:"pay",
-                width: 200,
+                width: 150,
                 sortable: true
               },
               {
                 title: "大众点评",
                 align: "center",
                 key:"people",
-                width: 200,
+                width: 150,
                 sortable: true
               },
               {
                 title: "占比",
                 align: "center",
                 key:"perf",
-                width: 200,
+                width: 150,
                 sortable: true
               },
               {
                 title: "商城赠送券",
                 align: "center",
                 key:"shop",
-                width: 200,
+                width: 150,
                 sortable: true
               }
             ]
@@ -70,19 +73,19 @@
       };
     },
     created() {
-       const data = [];
-            for (let i = 0; i < 20; i++) {
-                data.push({
-                    key: i,
-                    timeTrend: 'John Brown',
-                    age: i + 1,
-                    pay: 'Lake Park',
-                    people: 'C',
-                    perf: 2035,
-                    shop: 'Lake Street 42',
-                });
-            }
-        this.data10 = data;
+      //  const data = [];
+      //       for (let i = 0; i < 20; i++) {
+      //           data.push({
+      //               key: i,
+      //               timeTrend: 'John Brown',
+      //               age: i + 1,
+      //               pay: 'Lake Park',
+      //               people: 'C',
+      //               perf: 2035,
+      //               shop: 'Lake Street 42',
+      //           });
+      //       }
+      //   this.data10 = data;
     },
     components: {
       Table

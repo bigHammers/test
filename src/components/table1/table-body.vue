@@ -5,10 +5,14 @@
         </colgroup>
         <tbody :class="[prefixCls + '-tbody']">
             <template v-for="(row, index) in data" >
-                    <tr :class="rowClasses(row._index)">
-                        <td v-for="column in columns" :class="alignCls(column, row)">
-                          {{ row[column.key] }}
-                          <!-- <table-cell
+                <table-tr
+                    :row="row"
+                    :key="row._rowKey"
+                    :prefix-cls="prefixCls"
+                    @click.native="clickCurrentRow(row._index)"
+                    >
+                    <td v-for="column in columns" :class="alignCls(column, row)">
+                        <table-cell
                             :fixed="fixed"
                             :prefix-cls="prefixCls"
                             :row="row"
@@ -19,9 +23,14 @@
                             :checked="rowChecked(row._index)"
                             :disabled="rowDisabled(row._index)"
                             :expanded="rowExpanded(row._index)"
-                        ></table-cell> -->
-                         </td>
-                    </tr>
+                        ></table-cell>
+                    </td>
+                </table-tr>
+                <tr v-if="rowExpanded(row._index)" :class="{[prefixCls + '-expanded-hidden']: fixed}">
+                    <td :colspan="columns.length" :class="prefixCls + '-expanded-cell'">
+                        <Expand :key="row._rowKey" :row="row" :render="expandRender" :index="row._index"></Expand>
+                    </td>
+                </tr>
                     
             </template>
         </tbody>
@@ -29,8 +38,12 @@
 </template>
 
 <script>
+import TableTr from './table-tr.vue';
+import TableCell from './cell.vue';
+import Expand from './expand.js';
 export default {
   name: 'TableBody',
+  components: { TableCell, TableTr,Expand },
   props: {
     prefixCls: String,
     styleObject: Object,
@@ -43,7 +56,20 @@ export default {
         default: false
     }
   },
-
+  computed:{
+      expandRender () {
+            let render = function () {
+                return '';
+            };
+            for (let i = 0; i < this.columns.length; i++) {
+                const column = this.columns[i];
+                if (column.type && column.type === 'expand') {
+                    if (column.render) render = column.render;
+                }
+            }
+            return render;
+        }
+  },
   methods:{
     alignCls (column, row = {}) {
         let cellClassName = '';
@@ -52,10 +78,10 @@ export default {
         }
         return [
             {
-                // [`${cellClassName}`]: cellClassName,    // cell className
+                [`${cellClassName}`]: cellClassName,    // cell className
                 [`${column.className}`]: column.className,    // column className
                 [`${this.prefixCls}-column-${column.align}`]: column.align,
-                // [`${this.prefixCls}-hidden`]: (this.fixed === 'left' && column.fixed !== 'left') || (this.fixed === 'right' && column.fixed !== 'right') || (!this.fixed && column.fixed && (column.fixed === 'left' || column.fixed === 'right'))
+                [`${this.prefixCls}-hidden`]: (this.fixed === 'left' && column.fixed !== 'left') || (this.fixed === 'right' && column.fixed !== 'right') || (!this.fixed && column.fixed && (column.fixed === 'left' || column.fixed === 'right'))
             }
         ];
     },
@@ -77,7 +103,19 @@ export default {
         }
         if (width === '0') width = '';
         return width;
-    }
+    },
+    rowChecked (_index) {
+        return this.objData[_index] && this.objData[_index]._isChecked;
+    },
+    rowDisabled(_index){
+        return this.objData[_index] && this.objData[_index]._isDisabled;
+    },
+    rowExpanded(_index){
+        return this.objData[_index] && this.objData[_index]._isExpanded;
+    },
+    clickCurrentRow (_index) {
+        this.$parent.clickCurrentRow(_index);
+    },
   }
 
 }
